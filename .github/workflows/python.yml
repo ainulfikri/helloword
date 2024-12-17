@@ -1,0 +1,26 @@
+name: Python Hello World Test
+
+on:
+  push:
+    branches:
+      - main  # Adjust this if your branch is named differently
+  pull_request:
+    branches:
+      - main  # You can also test on pull requests if you want
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment for running tests
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # Checkout the code from your repository
+
+      - name: Set up Python
+        uses: actions/setup-python@v4  # Set up Python environment
+        with:
+          python-version: '3.x'  # Use Python 3 (you can adjust to a specific version if needed)
+
+      - name: Run Hello World Script
+        run: |
+          python hello_world.py  # Run the script
