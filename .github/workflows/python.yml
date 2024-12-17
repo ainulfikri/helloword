@@ -1,26 +1,39 @@
-name: Python Hello World Test
+name: Build APK
 
 on:
   push:
     branches:
-      - main  # Adjust this if your branch is named differently
+      - main
   pull_request:
     branches:
-      - main  # You can also test on pull requests if you want
+      - main
 
 jobs:
-  test:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu environment for running tests
+  build:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4  # Checkout the code from your repository
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v4  # Set up Python environment
-        with:
-          python-version: '3.x'  # Use Python 3 (you can adjust to a specific version if needed)
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
 
-      - name: Run Hello World Script
-        run: |
-          python hello_world.py  # Run the script
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install toga
+
+    - name: Build the APK
+      run: |
+        pip install briefcase
+        briefcase new android
+        briefcase build android
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: hello-world-apk
+        path: ./hello_world/android/dist/hello_world.apk
